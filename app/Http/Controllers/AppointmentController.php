@@ -44,5 +44,37 @@ class AppointmentController extends Controller
     
         return redirect()->route('appointments')->with('success', 'Appointment booked successfully!');
     }
-    
+
+    public function lookup(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Fetch only approved appointments based on search input (name, date, email, etc.)
+        $appointments = Appointment::where('status', 'approved')
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%$query%")
+                ->orWhere('email', 'like', "%$query%")
+                ->orWhere('phone_number', 'like', "%$query%")
+                ->orWhere('preferred_date_time', 'like', "%$query%");
+            })
+            ->get();
+
+        return view('receptionist.appointment-lookup', compact('appointments'));
+    }
+
+public function updateStatus(Request $request)
+{
+    $appointments = $request->input('appointments', []);
+
+    foreach ($appointments as $appointmentId => $status) {
+        $appointment = Appointment::find($appointmentId);
+        if ($appointment) {
+            $appointment->status = $status; // set status as 'done'
+            $appointment->save();
+        }
+    }
+
+    return redirect()->route('receptionist.appointments.lookup')->with('status', 'Appointment statuses updated.');
+}
+
 }

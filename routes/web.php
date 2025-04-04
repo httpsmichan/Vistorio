@@ -6,6 +6,7 @@ use App\Http\Controllers\HostController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
     
 Route::get('/', function () {
@@ -43,6 +44,23 @@ Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'ad
 Route::get('/admin/appointments', [AdminController::class, 'appointments'])
     ->middleware(['auth', 'admin'])
     ->name('admin.appointments');
+
+Route::get('/receptionist/appointments/lookup', [AppointmentController::class, 'lookup'])
+    ->middleware(['auth', 'receptionist'])
+    ->name('receptionist.appointments.lookup');
+
+Route::post('/appointments/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
+
+
+Route::get('/host/manage-appointments', [HostController::class, 'manageAppointments'])->name('manage.appointments');
+Route::post('/host/update-appointment-status', [HostController::class, 'updateStatus'])->name('update.appointment.status');
+
+Route::get('/walk-in', [VisitorController::class, 'create'])->name('walk-in.create');
+Route::post('/walk-in', [VisitorController::class, 'store'])->name('walk-in.store');
+Route::get('/log-out', [VisitorController::class, 'search'])->name('log-out.search');
+Route::patch('/log-out/{id}', [VisitorController::class, 'logout'])->name('log-out.update');
+
+Route::get('/receptionist/notifications', [NotificationController::class, 'index'])->name('receptionist.notifications');
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');

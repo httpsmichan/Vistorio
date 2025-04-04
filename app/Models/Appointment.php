@@ -14,5 +14,6 @@ class Appointment extends Model
         'purpose',
         'preferred_date_time',
         'host',
+        'status',
     ];
 }

@@ -12,7 +12,8 @@ class AdminController extends Controller
     {
         $users = User::all();
         $appointments = Appointment::all();
-        return view('admin', compact('users', 'appointments'));
+        $approvedAppointments = Appointment::where('status', 'approved')->get();
+        return view('admin', compact('users', 'appointments', 'approvedAppointments'));
     }
 
     public function create()
@@ -22,8 +23,9 @@ class AdminController extends Controller
 
     public function appointments()
     {
-        $appointments = Appointment::all(); // ✅ Fetch all appointments
-        return view('admin.appointment', compact('appointments'));
+        $appointments = Appointment::all(); // Fetch all appointments
+        $approvedAppointments = Appointment::where('status', 'approved')->get(); // Fetch approved appointments
+        return view('admin.appointment', compact('appointments', 'approvedAppointments'));
     }
 
     public function store(Request $request)
@@ -39,7 +41,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role, // ✅ Ensure role is stored
+            'role' => $request->role,
         ]);
 
         return redirect()->route('admin')->with('success', 'New account added successfully.');
@@ -78,3 +80,4 @@ class AdminController extends Controller
         return view('admin.user', compact('users'));
     }
 }
+

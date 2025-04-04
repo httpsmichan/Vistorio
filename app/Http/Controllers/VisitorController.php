@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Visitor;
+
+class VisitorController extends Controller
+{
+    public function create()
+{
+    // Get the last visitor number from the database, or default to '000'
+    $lastVisitor = Visitor::latest('visitor_number')->first();
+    $lastVisitorNumber = $lastVisitor ? (int) $lastVisitor->visitor_number : 0;
+
+    // Increment the visitor number and pad with leading zeros
+    $nextVisitorNumber = str_pad($lastVisitorNumber + 1, 3, '0', STR_PAD_LEFT);
+
+    // Pass the next visitor number to the view
+    return view('receptionist.walk-in', compact('nextVisitorNumber'));
+}
+
+
+    public function store(Request $request)
+{
+    $request->validate([
+        'visitor_number' => 'required|unique:visitors',
+        'full_name' => 'required|string|max:255',
+        'age' => 'required|integer|min:1',
+        'floor' => 'required|integer|min:1', // Ensure floor is an integer
+        'host' => 'required|string|max:255',
+        'visit_time' => 'required|date',
+    ]);
+
+    $floor = $request->floor;
+    $floorWithSuffix = $this->getOrdinalSuffix($floor); // Convert floor number to ordinal format
+
+    Visitor::create([
+        'visitor_number' => $request->visitor_number,
+        'full_name' => $request->full_name,
+        'age' => $request->age,
+        'floor' => $floorWithSuffix, // Store with suffix
+        'host' => $request->host,
+        'visit_time' => $request->visit_time,
+    ]);
+
+    return redirect()->route('walk-in.create')->with('success', 'Visitor registered successfully!');
+}
+
+private function getOrdinalSuffix($n)
+{
+    if ($n >= 11 && $n <= 13) {
+        return $n . "th";
+    }
+    switch ($n % 10) {
+        case 1: return $n . "st";
+        case 2: return $n . "nd";
+        case 3: return $n . "rd";
+        default: return $n . "th";
+    }
+}
+
+
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    // Fetch visitors who haven't logged out
+    $visitors = Visitor::whereNull('logged_out_at')
+        ->where(function ($q) use ($query) {
+            $q->where('visitor_number', 'like', "%$query%")
+              ->orWhere('full_name', 'like', "%$query%")
+              ->orWhere('host', 'like', "%$query%");
+        })
+        ->get();
+
+    return view('receptionist.log-out', compact('visitors'));
+}
+
+public function logout($id)
+{
+    // Find the visitor and update the logged_out_at column
+    $visitor = Visitor::findOrFail($id);
+    $visitor->update(['logged_out_at' => now()]);
+
+    return redirect()->route('log-out.search')->with('success', 'Visitor logged out successfully!');
+}
+
+
+}
+
