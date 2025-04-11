@@ -53,11 +53,15 @@
                                 <input type="number" name="floor" id="floor" class="border p-2 w-full" required oninput="updateFloorSuffix()">
                             </div>
 
-                            <!-- Host -->
+                           <!-- Host -->
                             <div class="mb-4">
                                 <label class="block font-medium text-gray-700">Host (Who will they visit?)</label>
-                                <input type="text" name="host" class="border p-2 w-full" required>
+                                <input type="text" name="host" class="border p-2 w-full" required value="{{ old('host') }}">
+                                @error('host')
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
+
 
                             <!-- Time & Date -->
                             <div class="mb-4">

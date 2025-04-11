@@ -54,6 +54,9 @@ Route::post('/appointments/update-status', [AppointmentController::class, 'updat
 
 Route::get('/host/manage-appointments', [HostController::class, 'manageAppointments'])->name('manage.appointments');
 Route::post('/host/update-appointment-status', [HostController::class, 'updateStatus'])->name('update.appointment.status');
+Route::get('/appointment-logs', [HostController::class, 'showAppointmentLogs'])->name('appointment.logs');
+Route::get('/host/visitor-logs', [HostController::class, 'showVisitorLogs'])->name('host.visitor-logs');
+Route::get('/host/calendar', [HostController::class, 'calendarView'])->name('host.calendar');
 
 Route::get('/walk-in', [VisitorController::class, 'create'])->name('walk-in.create');
 Route::post('/walk-in', [VisitorController::class, 'store'])->name('walk-in.store');
@@ -70,6 +73,15 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users/add', [AdminController::class, 'create'])->name('admin.users.add');
     Route::post('/admin/users', [AdminController::class, 'store'])->name('admin.users.store');
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users.index');
+
+     // Employee Management
+     Route::get('/employees', [AdminController::class, 'showEmployeeForm'])->name('admin.employees');
+     Route::post('/employees/save', [AdminController::class, 'storeEmployee'])->name('admin.saveEmployee');
+     Route::get('/employees/{id}/edit', [AdminController::class, 'editEmployee'])->name('admin.employees.edit');
+    Route::put('/employees/{id}', [AdminController::class, 'updateEmployee'])->name('admin.employees.update');
+    Route::delete('/employees/{id}', [AdminController::class, 'destroyEmployee'])->name('admin.employees.destroy');
 });
+
+
 
 require __DIR__.'/auth.php';

@@ -7,10 +7,48 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <div class="flex">
+                <!-- Sidebar -->
+                <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Menu</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="{{ route('admin') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
+                                Appointments
+                            </a>
+                        </li>
+                        <li class="opacity-50 cursor-not-allowed">
+                            <a href="#" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
+                        </li>
+                        <li class="opacity-50 cursor-not-allowed">
+                            <a href="#" class="block px-4 py-2 bg-white rounded">System Settings</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
+                                User Management
+                            </a>
+                        </li>
+                        <li class="opacity-50 cursor-not-allowed">
+                            <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
+                        </li>
+                        <li class="opacity-50 cursor-not-allowed">
+                            <a href="#" class="block px-4 py-2 bg-white rounded">Notifications</a>
+                        </li>
+                        <li class="opacity-50 cursor-not-allowed">
+                            <a href="#" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Main Content -->
+                <div class="w-3/4 bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                     <h3 class="text-lg font-semibold mb-4">{{ __('All Users') }}</h3>
-                    <table class="min-w-full bg-white border border-gray-200">
+                    <table class="w-full bg-white border border-gray-200">
                         <thead>
                             <tr class="w-full bg-gray-100 border-b">
                                 <th class="py-2 px-4 border">ID</th>
@@ -40,6 +78,46 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Add New User Form -->
+                <div class="mb-6 m-5">
+                <form action="{{ route('admin.users.store') }}" method="POST" class="bg-gray-50 p-4 rounded shadow m-5">
+                    @csrf
+                    <h3 class="text-lg font-semibold mb-4 text-center">Add New User</h3>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Next ID</label>
+                            <input type="text" name="id" value="{{ $nextId }}" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Name</label>
+                            <input type="text" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Role</label>
+                            <select name="role" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Select Role</option>
+                                <option value="visitor">Visitor</option>
+                                <option value="host">Host</option>
+                                <option value="admin">Admin</option>
+                                <option value="receptionist">Receptionist</option>
+                            </select>
+                        </div>
+                        <div class="col-span-4">
+                            <label class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add User</button>
+                    </div>
+                </form>
+            </div>
+
             </div>
         </div>
     </div>

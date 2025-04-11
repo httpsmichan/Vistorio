@@ -24,5 +24,50 @@ class HostController extends Controller
             return response()->json(['error' => 'Appointment not found'], 404);
         }
 
-        
+        public function showAppointmentLogs() 
+{
+    // Retrieve all appointments and separate them into booked and completed logs
+    $bookedAppointments = Appointment::where('status', '!=', 'completed') // Only include booked appointments
+        ->orderBy('created_at', 'desc') // Order by created_at (booking date)
+        ->get();
+
+    $completedAppointments = Appointment::where('status', 'completed') // Only include completed appointments
+        ->orderBy('updated_at', 'desc') // Order by updated_at (completion date)
+        ->get();
+
+    return view('host.appointment-log', compact('bookedAppointments', 'completedAppointments'));
+}
+
+public function showVisitorLogs()
+{
+    // Retrieve visitors who have a value for 'logged_out_at'
+    $visitors = \App\Models\Visitor::whereNotNull('logged_out_at')->get();
+
+    return view('host.visitor-logs', compact('visitors'));
+}
+
+public function calendarView()
+{
+    // Fetch only approved or completed appointments
+    $appointments = Appointment::whereIn('status', ['approved', 'completed'])
+                               ->orderBy('preferred_date_time', 'desc')
+                               ->get();
+
+    // Get the current month and year
+    $currentMonth = \Carbon\Carbon::now()->month;
+    $currentYear = \Carbon\Carbon::now()->year;
+
+    // Generate the first and last days of the month
+    $firstDayOfMonth = \Carbon\Carbon::createFromDate($currentYear, $currentMonth, 1);
+    $lastDayOfMonth = \Carbon\Carbon::createFromDate($currentYear, $currentMonth, $firstDayOfMonth->daysInMonth);
+
+    // Group the appointments by date (Y-m-d)
+    $groupedAppointments = $appointments->groupBy(function ($item) {
+        return \Carbon\Carbon::parse($item->preferred_date_time)->format('Y-m-d');
+    });
+
+    return view('host.calendar', compact('firstDayOfMonth', 'lastDayOfMonth', 'groupedAppointments', 'currentMonth', 'currentYear'));
+}
+
+
 }

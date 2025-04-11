@@ -34,17 +34,38 @@
 
                     <!-- Visitors Notifications -->
 <div id="visitorNotifications" class="space-y-6 hidden">
+    <!-- Visitors with 10 Minutes or Less Remaining -->
     <div class="bg-yellow-100 p-4 rounded-md shadow-md">
-        <h4 class="font-medium text-lg">Visitors with 1 Hour Remaining or Exceeded</h4>
+        <h4 class="font-medium text-lg mb-2">Visitors Due Time</h4>
         @foreach ($visitorNotifications as $visitor)
-            <div class="p-4 mb-2 border-b">
-                <p><strong>{{ $visitor->full_name }}</strong> is about to exceed their visit time or has already exceeded.</p>
-                <p><strong>Visit Time:</strong> {{ \Carbon\Carbon::parse($visitor->visit_time)->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}</p>
-                @if ($visitor->logged_out_at)
-                    <p class="text-red-600"><strong>{{ $visitor->full_name }}</strong> has logged out at {{ \Carbon\Carbon::parse($visitor->logged_out_at)->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}.</p>
-                @endif
-                <p><strong>Remaining Time:</strong> {{ $visitor->remaining_time }} minutes</p>
-            </div>
+            @php
+                $visitStart = \Carbon\Carbon::parse($visitor->visit_time)->timezone('Asia/Manila');
+                $visitEnd = $visitStart->copy()->addHour();
+                $now = \Carbon\Carbon::now('Asia/Manila');
+                $remainingMinutes = $now->floatDiffInMinutes($visitEnd, false);
+            @endphp
+
+            @if (!$visitor->logged_out_at && $remainingMinutes > 0 && $remainingMinutes <= 10)
+                <div class="p-4 mb-2 border-b">
+                    <p><strong>{{ $visitor->full_name }}</strong> is approaching the time limit.</p>
+                    <p><strong>Visit Time:</strong> {{ $visitStart->format('Y-m-d H:i:s') }}</p>
+                    <p><strong>Remaining Time:</strong> {{ number_format($remainingMinutes, 1) }} minutes</p>
+                </div>
+            @endif
+        @endforeach
+    </div>
+
+    <!-- Visitors who have Logged Out -->
+    <div class="bg-red-100 p-4 rounded-md shadow-md">
+        <h4 class="font-medium text-lg mb-2">Visitors Who Have Logged Out</h4>
+        @foreach ($visitorNotifications as $visitor)
+            @if ($visitor->logged_out_at)
+                <div class="p-4 mb-2 border-b">
+                    <p><strong>{{ $visitor->full_name }}</strong> has logged out.</p>
+                    <p><strong>Visit Time:</strong> {{ \Carbon\Carbon::parse($visitor->visit_time)->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}</p>
+                    <p><strong>Logged Out At:</strong> {{ \Carbon\Carbon::parse($visitor->logged_out_at)->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}</p>
+                </div>
+            @endif
         @endforeach
     </div>
 </div>

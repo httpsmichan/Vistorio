@@ -34,6 +34,9 @@
                             </a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
+                            <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
+                        </li>
+                        <li class="opacity-50 cursor-not-allowed">
                             <a href="#" class="block px-4 py-2 bg-white rounded">Notifications</a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
