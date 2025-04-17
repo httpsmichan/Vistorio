@@ -5,9 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex">
+    <div class="py-6 px-4">
+        <div class="flex space-x-4">
                 <!-- Sidebar -->
                 <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -25,7 +24,6 @@
                         {{ __("You're logged in!") }}
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </x-app-layout>

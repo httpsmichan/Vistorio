@@ -5,9 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex">
+    <div class="py-6 px-4">
+        <div class="flex space-x-4">
                 <!-- Sidebar -->
                 <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -21,7 +20,7 @@
                 </div>
 
                 <!-- Main Content -->
-                <div class="w-3/4 bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                     <h3 class="text-lg font-semibold mb-4">Appointment Logs</h3>
 
                     <!-- Search Bar -->
@@ -60,7 +59,6 @@
                     </div>
 
                 </div>
-            </div>
         </div>
     </div>
 

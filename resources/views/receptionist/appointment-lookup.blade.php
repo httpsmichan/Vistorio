@@ -5,9 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex">
+    <div class="py-6 px-4">
+        <div class="flex space-x-4">
                 <!-- Sidebar -->
                 <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -21,41 +20,42 @@
                 </div>
 
                 <!-- Main Content -->
-                <div class="w-3/4 bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                     <h3 class="text-lg font-semibold mb-4">Search Appointments</h3>
 
-                    <!-- Search Form -->
-                    <form method="GET" action="{{ route('receptionist.appointments.lookup') }}" class="mb-4">
-                        <input type="text" name="query" placeholder="Enter name, email, or phone number" class="border p-2 w-2/3">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
-                    </form>
+                    <!-- Search Bar -->
+                    <div class="mb-4">
+                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Enter name, email, or phone number" oninput="searchAppointments()">
+                    </div>
 
                     <!-- Appointment Results Table -->
                     @if(isset($appointments) && $appointments->count() > 0)
                         <form method="POST" action="{{ route('appointments.update-status') }}">
                             @csrf
-                            @foreach ($appointments as $appointment)
-                                <div class="border border-gray-300 p-4 mb-4 rounded">
-                                    <div class="flex justify-between">
-                                        <div class="w-3/4">
-                                            <p><strong>ID #</strong> {{ $appointment->id }}</p>
-                                            <p><strong>Name:</strong> {{ $appointment->name }}</p>
-                                            <p><strong>Email:</strong> {{ $appointment->email }}</p>
-                                            <p><strong>Phone:</strong> {{ $appointment->phone_number }}</p>
-                                            <p><strong>Appointment Date & Time:</strong> {{ $appointment->preferred_date_time }}</p>
-                                            <p><strong>Purpose:</strong> {{ $appointment->purpose }}</p>
-                                            <p><strong>Host:</strong> {{ $appointment->host }}</p>
-                                            <p><strong>Status:</strong> {{ $appointment->status }}</p>
-                                        </div>
-                                        <div class="w-1/4 flex items-center justify-center">
-                                            <label for="completed_{{ $appointment->id }}" class="inline-flex items-center">
-                                                <input type="checkbox" name="appointments[{{ $appointment->id }}]" id="completed_{{ $appointment->id }}" value="completed" class="form-checkbox" {{ $appointment->status == 'completed' ? 'checked' : '' }}>
-                                                <span class="ml-2">Mark as Completed</span>
-                                            </label>
+                            <div id="appointmentTable">
+                                @foreach ($appointments as $appointment)
+                                    <div class="border border-gray-300 p-4 mb-4 rounded appointment-item" data-name="{{ $appointment->name }}" data-email="{{ $appointment->email }}" data-phone="{{ $appointment->phone_number }}">
+                                        <div class="flex justify-between">
+                                            <div class="w-3/4">
+                                                <p><strong>ID #</strong> {{ $appointment->id }}</p>
+                                                <p><strong>Name:</strong> {{ $appointment->name }}</p>
+                                                <p><strong>Email:</strong> {{ $appointment->email }}</p>
+                                                <p><strong>Phone:</strong> {{ $appointment->phone_number }}</p>
+                                                <p><strong>Appointment Date & Time:</strong> {{ $appointment->preferred_date_time }}</p>
+                                                <p><strong>Purpose:</strong> {{ $appointment->purpose }}</p>
+                                                <p><strong>Host:</strong> {{ $appointment->host }}</p>
+                                                <p><strong>Status:</strong> {{ $appointment->status }}</p>
+                                            </div>
+                                            <div class="w-1/4 flex items-center justify-center">
+                                                <label for="completed_{{ $appointment->id }}" class="inline-flex items-center">
+                                                    <input type="checkbox" name="appointments[{{ $appointment->id }}]" id="completed_{{ $appointment->id }}" value="completed" class="form-checkbox" {{ $appointment->status == 'completed' ? 'checked' : '' }}>
+                                                    <span class="ml-2">Mark as Completed</span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                             <div class="flex justify-end">
                                 <button type="submit" class="bg-green-500 text-black px-4 py-2 rounded">Update Status</button>
                             </div>
@@ -64,7 +64,26 @@
                         <p class="text-gray-500">No appointments found.</p>
                     @endif
                 </div>
-            </div>
         </div>
     </div>
+
+    <!-- Search Script -->
+    <script>
+        function searchAppointments() {
+            let searchQuery = document.getElementById("searchBar").value.toLowerCase();
+            let appointmentItems = document.querySelectorAll('.appointment-item');
+            
+            appointmentItems.forEach(item => {
+                let name = item.getAttribute('data-name').toLowerCase();
+                let email = item.getAttribute('data-email').toLowerCase();
+                let phone = item.getAttribute('data-phone').toLowerCase();
+
+                if (name.includes(searchQuery) || email.includes(searchQuery) || phone.includes(searchQuery)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </x-app-layout>

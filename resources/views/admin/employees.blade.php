@@ -5,9 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex">
+    <div class="py-6 px-4">
+        <div class="flex space-x-4"> 
                 <!-- Sidebar -->
                 <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -46,7 +45,7 @@
                 </div>
 
                 <!-- Main Content -->
-                <div class="w-3/4 bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                     <h3 class="text-lg font-semibold mb-4">Add New Employee</h3>
 
                     <!-- Form to Add Employee to Organization -->
@@ -71,47 +70,63 @@
 
                     <h3 class="text-lg font-semibold mb-4">All Employees</h3>
 
-                    <!-- Search Form -->
-                    <form method="GET" action="{{ route('admin.employees') }}" class="mb-4">
-                        <input type="text" name="search" placeholder="Search by name or position" class="border p-2 w-3/4" value="{{ request()->query('search') }}">
-                        <button type="submit" class="bg-blue-500 items-center justify-center text-black px-4 py-2 rounded">Search</button>
-                    </form>
+                    <!-- Search Bar -->
+                    <div class="mb-4">
+                        <input id="searchBar" type="text" class="px-4 py-2 w-3/4 border rounded" placeholder="Search by Name or Position..." oninput="searchEmployees()">
+                    </div>
 
                     <!-- Employee List Table -->
                     @if($employees->count() > 0)
                     <table class="table-auto w-full border-collapse border border-gray-300">
-    <thead>
-        <tr class="bg-gray-100">
-            <th class="px-4 py-2 border text-left">ID</th>
-            <th class="px-4 py-2 border text-left">Name</th>
-            <th class="px-4 py-2 border text-left">Position</th>
-            <th class="px-4 py-2 border text-left">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($employees as $employee)
-            <tr>
-                <td class="px-4 py-2 border">{{ $employee->id }}</td>
-                <td class="px-4 py-2 border">{{ $employee->name }}</td>
-                <td class="px-4 py-2 border">{{ $employee->position }}</td>
-                <td class="px-4 py-2 border">
-                    <a href="{{ route('admin.employees.edit', $employee->id) }}" class="text-blue-500 hover:underline mr-2">Edit</a>
-                    <form action="{{ route('admin.employees.destroy', $employee->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Are you sure you want to delete this employee?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-2 border text-left">ID</th>
+                                <th class="px-4 py-2 border text-left">Name</th>
+                                <th class="px-4 py-2 border text-left">Position</th>
+                                <th class="px-4 py-2 border text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeTable">
+                            @foreach ($employees as $employee)
+                                <tr class="employee-item" data-name="{{ $employee->name }}" data-position="{{ $employee->position }}">
+                                    <td class="px-4 py-2 border">{{ $employee->id }}</td>
+                                    <td class="px-4 py-2 border">{{ $employee->name }}</td>
+                                    <td class="px-4 py-2 border">{{ $employee->position }}</td>
+                                    <td class="px-4 py-2 border">
+                                        <a href="{{ route('admin.employees.edit', $employee->id) }}" class="text-blue-500 hover:underline mr-2">Edit</a>
+                                        <form action="{{ route('admin.employees.destroy', $employee->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Are you sure you want to delete this employee?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                     @else
                         <p class="text-gray-500">No employees found.</p>
                     @endif
                 </div>
-            </div>
         </div>
     </div>
+
+    <!-- Search Script -->
+    <script>
+        function searchEmployees() {
+            let searchQuery = document.getElementById("searchBar").value.toLowerCase();
+            let employeeItems = document.querySelectorAll('.employee-item');
+            
+            employeeItems.forEach(item => {
+                let name = item.getAttribute('data-name').toLowerCase();
+                let position = item.getAttribute('data-position').toLowerCase();
+
+                if (name.includes(searchQuery) || position.includes(searchQuery)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </x-app-layout>

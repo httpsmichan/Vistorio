@@ -1,13 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Appointment Lookup') }}
+            {{ __('Receptionist Dashboard') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex">
+    <div class="py-6 px-4">
+        <div class="flex space-x-4">
                 <!-- Sidebar -->
                 <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -19,7 +18,6 @@
                         <li><a href="{{ route('receptionist.notifications') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Notifications</a></li>
                     </ul>
                 </div>
-            </div>
         </div>
     </div>
 </x-app-layout>

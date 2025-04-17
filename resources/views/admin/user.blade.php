@@ -5,9 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex">
+    <div class="py-6 px-4">
+        <div class="flex space-x-4">
                 <!-- Sidebar -->
                 <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -46,8 +45,15 @@
                 </div>
 
                 <!-- Main Content -->
-                <div class="w-3/4 bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                     <h3 class="text-lg font-semibold mb-4">{{ __('All Users') }}</h3>
+
+                    <!-- Search Bar -->
+                    <div class="mb-4">
+                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Name, Email, or Role..." oninput="searchUsers()">
+                    </div>
+
+                    <!-- Users Table -->
                     <table class="w-full bg-white border border-gray-200">
                         <thead>
                             <tr class="w-full bg-gray-100 border-b">
@@ -58,9 +64,9 @@
                                 <th class="py-2 px-4 border">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="userTable">
                             @foreach ($users as $user)
-                                <tr class="border-b">
+                                <tr class="border-b user-item" data-name="{{ $user->name }}" data-email="{{ $user->email }}" data-role="{{ $user->role }}">
                                     <td class="py-2 px-4 border">{{ $user->id }}</td>
                                     <td class="py-2 px-4 border">{{ $user->name }}</td>
                                     <td class="py-2 px-4 border">{{ $user->email }}</td>
@@ -81,44 +87,62 @@
 
                 <!-- Add New User Form -->
                 <div class="mb-6 m-5">
-                <form action="{{ route('admin.users.store') }}" method="POST" class="bg-gray-50 p-4 rounded shadow m-5">
-                    @csrf
-                    <h3 class="text-lg font-semibold mb-4 text-center">Add New User</h3>
-                    <div class="grid grid-cols-4 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Next ID</label>
-                            <input type="text" name="id" value="{{ $nextId }}" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                    <form action="{{ route('admin.users.store') }}" method="POST" class="bg-gray-50 p-4 rounded shadow m-5">
+                        @csrf
+                        <h3 class="text-lg font-semibold mb-4 text-center">Add New User</h3>
+                        <div class="grid grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Next ID</label>
+                                <input type="text" name="id" value="{{ $nextId }}" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Name</label>
+                                <input type="text" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Role</label>
+                                <select name="role" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                    <option value="">Select Role</option>
+                                    <option value="visitor">Visitor</option>
+                                    <option value="host">Host</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="receptionist">Receptionist</option>
+                                </select>
+                            </div>
+                            <div class="col-span-4">
+                                <label class="block text-sm font-medium text-gray-700">Password</label>
+                                <input type="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                        <div class="mt-4 text-center">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add User</button>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Role</label>
-                            <select name="role" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                <option value="">Select Role</option>
-                                <option value="visitor">Visitor</option>
-                                <option value="host">Host</option>
-                                <option value="admin">Admin</option>
-                                <option value="receptionist">Receptionist</option>
-                            </select>
-                        </div>
-                        <div class="col-span-4">
-                            <label class="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
-                        </div>
-                    </div>
-                    <div class="mt-4 text-center">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add User</button>
-                    </div>
-                </form>
-            </div>
-
-            </div>
+                    </form>
+                </div>
         </div>
     </div>
+
+    <!-- Search Script -->
+    <script>
+        function searchUsers() {
+            let searchQuery = document.getElementById("searchBar").value.toLowerCase();
+            let userItems = document.querySelectorAll('.user-item');
+            
+            userItems.forEach(item => {
+                let name = item.getAttribute('data-name').toLowerCase();
+                let email = item.getAttribute('data-email').toLowerCase();
+                let role = item.getAttribute('data-role').toLowerCase();
+
+                if (name.includes(searchQuery) || email.includes(searchQuery) || role.includes(searchQuery)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </x-app-layout>

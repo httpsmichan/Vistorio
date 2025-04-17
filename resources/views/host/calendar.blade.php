@@ -20,7 +20,7 @@
             </div>
 
             <!-- Main Content -->
-            <div class="w-3/4">
+            <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                 <!-- Search Bar -->
                 <div class="mb-4">
                     <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Visitor Name, Status, or Booked Date..." oninput="searchLogs()">

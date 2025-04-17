@@ -5,9 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex">
+    <div class="py-6 px-4">
+        <div class="flex space-x-4">
                 <!-- Sidebar -->
                 <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -69,44 +68,7 @@
                             Add an Account
                         </a>
                     </div>
-
-                    <!-- Appointments Section -->
-                    <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                        <h3 class="text-lg font-semibold mb-4">All Appointments</h3>
-                        <table class="w-full border-collapse border border-gray-300">
-                            <thead>
-                                <tr class="bg-gray-200">
-                                    <th class="border border-gray-300 px-4 py-2">User ID</th>
-                                    <th class="border border-gray-300 px-4 py-2">Name</th>
-                                    <th class="border border-gray-300 px-4 py-2">Email</th>
-                                    <th class="border border-gray-300 px-4 py-2">Phone Number</th>
-                                    <th class="border border-gray-300 px-4 py-2">Purpose</th>
-                                    <th class="border border-gray-300 px-4 py-2">Preferred Date & Time</th>
-                                    <th class="border border-gray-300 px-4 py-2">Host</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($appointments as $appointment)
-                                    <tr>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->user_id }}</td>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->name }}</td>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->email }}</td>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->phone_number }}</td>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->purpose }}</td>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->preferred_date_time }}</td>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $appointment->host }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center py-4 text-gray-500">No appointments found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
                 </div>
-            </div>
         </div>
     </div>
 </x-app-layout>
