@@ -73,6 +73,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users/add', [AdminController::class, 'create'])->name('admin.users.add');
     Route::post('/admin/users', [AdminController::class, 'store'])->name('admin.users.store');
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users.index');
+    Route::get('/notifications', [AdminController::class, 'notifications'])->name('admin.notifications');
+    Route::get('/visitor-logs', [AdminController::class, 'adminVisitorLogs'])->name('admin.visitor.logs');
+    Route::get('/analytics', [AdminController::class, 'analytics'])->name('admin.analytics');
+
 
      // Employee Management
      Route::get('/employees', [AdminController::class, 'showEmployeeForm'])->name('admin.employees');

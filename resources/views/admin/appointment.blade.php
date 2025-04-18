@@ -22,10 +22,7 @@
                         </a>
                     </li>
                     <li class="opacity-50 cursor-not-allowed">
-                        <a href="#" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
-                    </li>
-                    <li class="opacity-50 cursor-not-allowed">
-                        <a href="#" class="block px-4 py-2 bg-white rounded">System Settings</a>
+                        <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
                     </li>
                     <li>
                         <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
@@ -36,10 +33,10 @@
                         <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
                     </li>
                     <li class="opacity-50 cursor-not-allowed">
-                        <a href="#" class="block px-4 py-2 bg-white rounded">Notifications</a>
+                        <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white rounded">Notifications</a>
                     </li>
                     <li class="opacity-50 cursor-not-allowed">
-                        <a href="#" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
+                        <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
                     </li>
                 </ul>
             </div>
@@ -48,7 +45,6 @@
             <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                 <!-- Display User's Appointments Table -->
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Appointments</h3>
                     <!-- Search Bar -->
                     <div class="mb-4">
                         <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Name, Email, or Phone Number..." oninput="searchAppointments()">
@@ -88,7 +84,7 @@
 
                 <!-- Display Approved Appointments Table -->
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Approved Appointments</h3>
+                    <h3 class="text-lg font-semibold mb-4">Pending Appointments</h3>
                     <table class="w-full border-collapse border border-gray-300">
                         <thead>
                             <tr class="bg-gray-200">
@@ -112,7 +108,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-gray-500">No approved appointments found.</td>
+                                    <td colspan="6" class="text-center py-4 text-gray-500"> No pending appointments found.</td>
                                 </tr>
                             @endforelse
                         </tbody>

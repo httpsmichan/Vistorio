@@ -22,7 +22,6 @@
                 <!-- Main Content -->
                 <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                     <div class="p-6 text-gray-900">
-                        <h3 class="text-lg font-semibold mb-4">Register a Walk-In Visitor</h3>
 
                         <!-- Walk-In Registration Form -->
                         <form method="POST" action="{{ route('walk-in.store') }}">

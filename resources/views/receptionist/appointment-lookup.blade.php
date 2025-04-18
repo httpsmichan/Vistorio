@@ -21,11 +21,10 @@
 
                 <!-- Main Content -->
                 <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Search Appointments</h3>
 
                     <!-- Search Bar -->
                     <div class="mb-4">
-                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Enter name, email, or phone number" oninput="searchAppointments()">
+                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search name, email, or phone number" oninput="searchAppointments()">
                     </div>
 
                     <!-- Appointment Results Table -->

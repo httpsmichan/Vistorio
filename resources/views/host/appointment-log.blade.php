@@ -21,7 +21,6 @@
 
                 <!-- Main Content -->
                 <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">Appointment Logs</h3>
 
                     <!-- Search Bar -->
                     <div class="mb-4">

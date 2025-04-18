@@ -22,10 +22,7 @@
                             </a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
-                        </li>
-                        <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">System Settings</a>
+                            <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
                         </li>
                         <li>
                             <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
@@ -36,10 +33,10 @@
                             <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">Notifications</a>
+                            <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white rounded">Notifications</a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
+                            <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
                         </li>
                     </ul>
                 </div>

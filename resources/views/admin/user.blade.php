@@ -22,10 +22,7 @@
                             </a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
-                        </li>
-                        <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">System Settings</a>
+                            <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
                         </li>
                         <li>
                             <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
@@ -36,17 +33,16 @@
                             <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">Notifications</a>
+                            <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white rounded">Notifications</a>
                         </li>
                         <li class="opacity-50 cursor-not-allowed">
-                            <a href="#" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
+                            <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Main Content -->
                 <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4">{{ __('All Users') }}</h3>
 
                     <!-- Search Bar -->
                     <div class="mb-4">
@@ -86,15 +82,11 @@
                 </div>
 
                 <!-- Add New User Form -->
-                <div class="mb-6 m-5">
+                <div class="mb-6 m-5 ">
                     <form action="{{ route('admin.users.store') }}" method="POST" class="bg-gray-50 p-4 rounded shadow m-5">
                         @csrf
                         <h3 class="text-lg font-semibold mb-4 text-center">Add New User</h3>
                         <div class="grid grid-cols-4 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Next ID</label>
-                                <input type="text" name="id" value="{{ $nextId }}" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
-                            </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Name</label>
                                 <input type="text" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
@@ -119,7 +111,7 @@
                             </div>
                         </div>
                         <div class="mt-4 text-center">
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add User</button>
+                            <button type="submit" class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600 transition">Add User</button>
                         </div>
                     </form>
                 </div>
