@@ -1,9 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Employee Management') }}
-        </h2>
-    </x-slot>
 
     <div class="py-6 px-4">
         <div class="flex space-x-4"> 
@@ -69,7 +64,7 @@
 
                     <!-- Search Bar -->
                     <div class="mb-4">
-                        <input id="searchBar" type="text" class="px-4 py-2 w-3/4 border rounded" placeholder="Search by Name or Position..." oninput="searchEmployees()">
+                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by ID, Name, or Position..." oninput="searchEmployees()">
                     </div>
 
                     <!-- Employee List Table -->
@@ -85,7 +80,7 @@
                         </thead>
                         <tbody id="employeeTable">
                             @foreach ($employees as $employee)
-                                <tr class="employee-item" data-name="{{ $employee->name }}" data-position="{{ $employee->position }}">
+                                <tr class="employee-item" data-id="{{ $employee->id }}" data-name="{{ $employee->name }}" data-position="{{ $employee->position }}">
                                     <td class="px-4 py-2 border">{{ $employee->id }}</td>
                                     <td class="px-4 py-2 border">{{ $employee->name }}</td>
                                     <td class="px-4 py-2 border">{{ $employee->position }}</td>
@@ -115,10 +110,11 @@
             let employeeItems = document.querySelectorAll('.employee-item');
             
             employeeItems.forEach(item => {
+                let id = item.getAttribute('data-id').toString().toLowerCase(); // Include ID in search criteria
                 let name = item.getAttribute('data-name').toLowerCase();
                 let position = item.getAttribute('data-position').toLowerCase();
 
-                if (name.includes(searchQuery) || position.includes(searchQuery)) {
+                if (id.includes(searchQuery) || name.includes(searchQuery) || position.includes(searchQuery)) {
                     item.style.display = '';
                 } else {
                     item.style.display = 'none';
@@ -126,4 +122,5 @@
             });
         }
     </script>
+
 </x-app-layout>

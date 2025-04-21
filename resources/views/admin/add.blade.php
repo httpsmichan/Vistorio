@@ -1,9 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add New Account') }}
-        </h2>
-    </x-slot>
 
     <div class="py-6 px-4">
         <div class="flex space-x-4">

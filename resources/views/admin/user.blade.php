@@ -1,9 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('All Users') }}
-        </h2>
-    </x-slot>
 
     <div class="py-6 px-4">
         <div class="flex space-x-4">
@@ -43,10 +38,11 @@
 
                 <!-- Main Content -->
                 <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-semibold">User Management</h3>
 
                     <!-- Search Bar -->
-                    <div class="mb-4">
-                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Name, Email, or Role..." oninput="searchUsers()">
+                    <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by ID, Name, Email, or Role..." oninput="searchUsers()">
                     </div>
 
                     <!-- Users Table -->
@@ -62,7 +58,7 @@
                         </thead>
                         <tbody id="userTable">
                             @foreach ($users as $user)
-                                <tr class="border-b user-item" data-name="{{ $user->name }}" data-email="{{ $user->email }}" data-role="{{ $user->role }}">
+                                <tr class="border-b user-item" data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-email="{{ $user->email }}" data-role="{{ $user->role }}">
                                     <td class="py-2 px-4 border">{{ $user->id }}</td>
                                     <td class="py-2 px-4 border">{{ $user->name }}</td>
                                     <td class="py-2 px-4 border">{{ $user->email }}</td>
@@ -82,7 +78,7 @@
                 </div>
 
                 <!-- Add New User Form -->
-                <div class="mb-6 m-5 ">
+                <div class="mb-6 m-5">
                     <form action="{{ route('admin.users.store') }}" method="POST" class="bg-gray-50 p-4 rounded shadow m-5">
                         @csrf
                         <h3 class="text-lg font-semibold mb-4 text-center">Add New User</h3>
@@ -125,11 +121,12 @@
             let userItems = document.querySelectorAll('.user-item');
             
             userItems.forEach(item => {
+                let id = item.getAttribute('data-id').toString().toLowerCase();  // Add ID to the search query
                 let name = item.getAttribute('data-name').toLowerCase();
                 let email = item.getAttribute('data-email').toLowerCase();
                 let role = item.getAttribute('data-role').toLowerCase();
 
-                if (name.includes(searchQuery) || email.includes(searchQuery) || role.includes(searchQuery)) {
+                if (id.includes(searchQuery) || name.includes(searchQuery) || email.includes(searchQuery) || role.includes(searchQuery)) {
                     item.style.display = '';
                 } else {
                     item.style.display = 'none';
@@ -137,4 +134,5 @@
             });
         }
     </script>
+
 </x-app-layout>

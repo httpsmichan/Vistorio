@@ -57,6 +57,8 @@ Route::post('/host/update-appointment-status', [HostController::class, 'updateSt
 Route::get('/appointment-logs', [HostController::class, 'showAppointmentLogs'])->name('appointment.logs');
 Route::get('/host/visitor-logs', [HostController::class, 'showVisitorLogs'])->name('host.visitor-logs');
 Route::get('/host/calendar', [HostController::class, 'calendarView'])->name('host.calendar');
+Route::get('/host/notifications', [HostController::class, 'showNotifications'])->name('host.notifications');
+
 
 Route::get('/walk-in', [VisitorController::class, 'create'])->name('walk-in.create');
 Route::post('/walk-in', [VisitorController::class, 'store'])->name('walk-in.store');

@@ -16,7 +16,36 @@
             $users = User::all();
             $appointments = Appointment::all();
             $approvedAppointments = Appointment::where('status', 'approved')->get();
-            return view('admin', compact('users', 'appointments', 'approvedAppointments'));
+            $visitors = Visitor::all();
+
+            $userRegistrationsByDay = DB::table('users')
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as count'))
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date', 'asc')
+            ->get();
+
+            $visitorRegistrationsByDay = DB::table('visitors')
+            ->select(DB::raw('DATE(visit_time) as date'), DB::raw('COUNT(*) as count'))
+            ->groupBy(DB::raw('DATE(visit_time)'))
+            ->orderBy('date', 'asc')
+            ->get();
+
+            $appointmentsByDay = DB::table('appointments')
+            ->select(DB::raw('DATE(preferred_date_time) as date'), DB::raw('COUNT(*) as count'))
+            ->groupBy(DB::raw('DATE(preferred_date_time)'))
+            ->orderBy('date', 'asc')
+            ->get();
+
+
+            return view('admin', compact(
+                'users',
+                'appointments',
+                'approvedAppointments',
+                'userRegistrationsByDay',
+                'visitors',
+                'visitorRegistrationsByDay',
+                'appointmentsByDay'
+            ));            
         }
 
         public function create()
@@ -26,8 +55,8 @@
 
         public function appointments()
         {
-            $appointments = Appointment::all(); // Fetch all appointments
-            $approvedAppointments = Appointment::where('status', 'approved')->get(); // Fetch approved appointments
+            $appointments = Appointment::all(); 
+            $approvedAppointments = Appointment::where('status', 'approved')->get(); 
             return view('admin.appointment', compact('appointments', 'approvedAppointments'));
         }
 
@@ -73,9 +102,7 @@
 
     $user = User::findOrFail($id);
 
-    // Check if the role has changed
     if ($user->role !== $request->role) {
-        // Log the role change
         DB::table('user_role_changes')->insert([
             'user_id' => $user->id,
             'old_role' => $user->role,
@@ -85,7 +112,6 @@
         ]);
     }
 
-    // Update user info
     $user->update($request->only(['name', 'email', 'role']));
 
     return redirect()->route('admin')->with('success', 'User updated successfully');
@@ -101,33 +127,27 @@
 
         public function showEmployeeForm(Request $request)
         {
-            // Get the search query from the request (if any)
             $search = $request->query('search');
 
-            // Fetch employees from the organization table, apply search filter if needed
             if ($search) {
                 $employees = DB::table('organization')
                     ->where('name', 'like', '%' . $search . '%')
                     ->orWhere('position', 'like', '%' . $search . '%')
                     ->get();
             } else {
-                // If no search query, get all employees
                 $employees = DB::table('organization')->get();
             }
 
-            // Pass the employees to the view
             return view('admin.employees', compact('employees'));
         }
 
         public function storeEmployee(Request $request)
         {
-            // Validate the input data
             $request->validate([
                 'name' => 'required|string|max:255',
                 'position' => 'required|string|max:255',
             ]);
 
-            // Insert data into the 'organization' table
             DB::table('organization')->insert([
                 'name' => $request->name,
                 'position' => $request->position,
@@ -135,7 +155,6 @@
                 'updated_at' => now(),
             ]);
 
-            // Redirect back to the employee management page
             return redirect()->route('admin.employees');
         }
 
@@ -209,40 +228,37 @@
 
     public function analytics()
 {
-    // 1. Same Visitor Multiple Times a Day (from visitors table)
     $sameVisitorMultipleTimes = Visitor::select('full_name', DB::raw('count(*) as visits'))
-    ->whereDate('visit_time', '=', now()->toDateString()) // Same day
-    ->groupBy('full_name') // Group by full_name to count the visits
-    ->havingRaw('count(*) > 1') // More than 1 visit by the same visitor today
+    ->whereDate('visit_time', '=', now()->toDateString()) 
+    ->groupBy('full_name') 
+    ->havingRaw('count(*) > 1') 
     ->get();
 
-
-    // 2. Host Not Responding to Appointments
     $hostsNotResponding = Appointment::select('host', DB::raw('count(*) as pending_count'))
         ->where('status', 'pending')
         ->groupBy('host')
         ->get();    
 
-    // 3. Excessive Appointment Rejections
-    $excessiveRejections = Appointment::select('user_id', DB::raw('count(*) as rejection_count'))
+        $excessiveRejections = DB::table('appointments')
+        ->select('host', DB::raw('count(*) as rejections'))
         ->where('status', 'rejected')
-        ->whereDate('updated_at', '=', now()->toDateString()) // Same day rejections
-        ->groupBy('user_id')
-        ->havingRaw('count(*) > 3') // More than 3 rejections today
+        ->groupBy('host')
+        ->havingRaw('count(*) > 2')
         ->get();
+    
 
-    // 4. Failed Login Attempts
     $failedLogins = DB::table('login_attempts')
-        ->where('status', 'failed')
-        ->count();
+    ->select(DB::raw('DATE(created_at) as date'), DB::raw('COUNT(*) as attempts'))
+    ->where('status', 'failed')
+    ->groupBy(DB::raw('DATE(created_at)'))
+    ->orderBy('date', 'asc')
+    ->get();
 
-    // 5. Latest User Role Changes
     $roleChanges = DB::table('user_role_changes')
         ->orderByDesc('created_at')
         ->limit(5)
         ->get();
 
-    // Pass the data to the view
     return view('admin.analytics', compact(
         'sameVisitorMultipleTimes',
         'hostsNotResponding',
@@ -251,7 +267,5 @@
         'roleChanges'
     ));
 }
-
-
     }
 

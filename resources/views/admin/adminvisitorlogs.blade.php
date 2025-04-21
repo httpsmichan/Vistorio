@@ -1,9 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Visitor Logs') }}
-        </h2>
-    </x-slot>
 
     <div class="py-6 px-4">
         <div class="flex space-x-4">
@@ -43,10 +38,10 @@
 
             <!-- Main Content (Visitor Logs Table) -->
             <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
-
+                <h3 class="text-lg font-semibold">Visitor Logs</h3>
                 <!-- Search Bar -->
-                <div class="mb-4">
-                    <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Visitor Name, Status, or Booked Date..." oninput="searchLogs()">
+                <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                    <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Visitor Name, Status, Host, Floor, or Visit Date..." oninput="searchLogs()">
                 </div>
 
                 <table class="w-full border-collapse border border-gray-300">

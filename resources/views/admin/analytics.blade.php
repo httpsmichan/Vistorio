@@ -1,12 +1,7 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Analytics') }}
-        </h2>
-    </x-slot>
 
     <div class="py-6 px-4">
-        <div class="flex gap-6">
+        <div class="flex space-x-4">
             <!-- Sidebar -->
             <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
                 <h3 class="text-lg font-semibold mb-4">Menu</h3>
@@ -30,7 +25,7 @@
                         </a>
                     </li>
                     <li class="opacity-50 cursor-not-allowed">
-                        <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
+                    <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
                     </li>
                     <li class="opacity-50 cursor-not-allowed">
                         <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white rounded">Notifications</a>
@@ -43,75 +38,107 @@
 
             <!-- Main Content -->
             <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
-<!-- Same Visitor Multiple Times Today -->
-<div class="bg-white p-6 rounded-lg shadow-sm">
-    <h3 class="text-lg font-semibold mb-4">Same Visitor Multiple Times Today</h3>
-    <table class="w-full border-collapse border border-gray-300">
-        <thead>
-            <tr class="bg-gray-200">
-                <th class="border border-gray-300 px-4 py-2">Visitor Name</th>
-                <th class="border border-gray-300 px-4 py-2">Visit Count</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($sameVisitorMultipleTimes as $visitor)
-                <tr>
-                    <td class="border border-gray-300 px-4 py-2">{{ $visitor->full_name }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ $visitor->visits }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-
+                <!-- Same Visitor Multiple Times Today -->
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Same Visitor Multiple Times Today</h3>
+                    <div class="space-y-3">
+                        @forelse ($sameVisitorMultipleTimes as $visitor)
+                            <div class="flex justify-between items-center bg-gray-100 p-4 rounded shadow-sm">
+                                <span class="font-medium text-gray-800">{{ $visitor->full_name }}</span>
+                                <span class="text-sm text-blue-600 font-semibold">{{ $visitor->visits }} visits</span>
+                            </div>
+                        @empty
+                            <p class="text-gray-500">No repeat visitors today.</p>
+                        @endforelse
+                    </div>
+                </div>
 
                 <!-- Hosts Not Responding -->
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-semibold mb-4">Hosts Not Responding to Appointments</h3>
-                    <table class="w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="border border-gray-300 px-4 py-2">Host</th>
-                                <th class="border border-gray-300 px-4 py-2">Pending Appointments</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($hostsNotResponding as $host)
-                                <tr>
-                                    <td class="border border-gray-300 px-4 py-2">{{ $host->host }}</td>
-                                    <td class="border border-gray-300 px-4 py-2">Pending</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Pending Appointments</h3>
+                    <div class="space-y-3">
+                        @forelse ($hostsNotResponding as $host)
+                            <div class="flex justify-between items-center bg-yellow-100 p-4 rounded shadow-sm">
+                                <span class="font-medium text-gray-800">{{ $host->host }}</span>
+                                <span class="text-sm text-yellow-600 font-semibold">{{ $host->pending_count }} pending</span>
+                            </div>
+                        @empty
+                            <p class="text-gray-500">No pending appointments found.</p>
+                        @endforelse
+                    </div>
                 </div>
 
                 <!-- Excessive Rejections -->
-                <div class="bg-white p-6 rounded-lg shadow-sm">
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
                     <h3 class="text-lg font-semibold mb-4">Excessive Appointment Rejections</h3>
-                    <table class="w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="border border-gray-300 px-4 py-2">User ID</th>
-                                <th class="border border-gray-300 px-4 py-2">Rejections Today</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($excessiveRejections as $user)
-                                <tr>
-                                    <td class="border border-gray-300 px-4 py-2">{{ $user->user_id }}</td>
-                                    <td class="border border-gray-300 px-4 py-2">{{ $user->appointments_count ?? 'N/A' }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="space-y-3">
+                        @forelse ($excessiveRejections as $user)
+                            <div class="flex justify-between items-center bg-red-100 p-4 rounded shadow-sm">
+                                <span class="font-medium text-gray-800">User ID: {{ $user->user_id }}</span>
+                                <span class="text-sm text-red-600 font-semibold">{{ $user->appointments_count ?? 'N/A' }} rejections</span>
+                            </div>
+                        @empty
+                            <p class="text-gray-500">No users with excessive rejections.</p>
+                        @endforelse
+                    </div>
                 </div>
 
-                <!-- Failed Login Attempts -->
+
+                                <!-- Failed Login Attempts Bar Chart -->
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Failed Login Attempts</h3>
-                    <p>Total failed login attempts: {{ $failedLogins }}</p>
+                    <canvas id="failedLoginChart" height="100"></canvas>
                 </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const ctx = document.getElementById('failedLoginChart').getContext('2d');
+
+                    const failedLoginChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: {!! json_encode($failedLogins->pluck('date')) !!},
+                            datasets: [{
+                                label: 'Failed Attempts',
+                                data: {!! json_encode($failedLogins->pluck('attempts')) !!},
+                                backgroundColor: '#f87171', // Tailwind red-400
+                                borderRadius: 6,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Attempts'
+                                    },
+                                    ticks: {
+                                        stepSize: 1,
+                                        precision: 0,
+                                        callback: function(value) {
+                                            if (Number.isInteger(value)) {
+                                                return value;
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+                </script>
+
 
                 <!-- Latest Role Changes -->
                 <div class="bg-white p-6 rounded-lg shadow-sm">

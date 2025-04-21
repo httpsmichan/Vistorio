@@ -60,7 +60,7 @@
                             </div>
                         </form>
                     @else
-                        <p class="text-gray-500">No appointments found.</p>
+                        <p class="text-gray-500">No current appointment found.</p>
                     @endif
                 </div>
         </div>

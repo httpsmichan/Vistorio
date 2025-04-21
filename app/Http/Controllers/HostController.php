@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Visitor;
 use App\Models\Appointment;
 
 class HostController extends Controller
@@ -68,6 +69,26 @@ public function calendarView()
 
     return view('host.calendar', compact('firstDayOfMonth', 'lastDayOfMonth', 'groupedAppointments', 'currentMonth', 'currentYear'));
 }
+
+public function showNotifications()
+    {
+        // Fetch visitor notifications (those who are approaching time limit or have logged out)
+        $visitorNotifications = Visitor::all();
+
+        // Fetch past appointments
+        $pastAppointments = Appointment::where('status', '!=', 'completed') // Filter out completed appointments
+            ->where('preferred_date_time', '<', now()) // Only past appointments
+            ->orderBy('preferred_date_time', 'desc')
+            ->get();
+
+        // Fetch completed appointments
+        $completedAppointments = Appointment::where('status', 'completed')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        // Return view with all the necessary data
+        return view('host.hostnotifications', compact('visitorNotifications', 'pastAppointments', 'completedAppointments'));
+    }
 
 
 }
