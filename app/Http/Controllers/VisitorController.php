@@ -10,14 +10,11 @@ class VisitorController extends Controller
 {
     public function create()
 {
-    // Get the last visitor number from the database, or default to '000'
     $lastVisitor = Visitor::latest('visitor_number')->first();
     $lastVisitorNumber = $lastVisitor ? (int) $lastVisitor->visitor_number : 0;
 
-    // Increment the visitor number and pad with leading zeros
     $nextVisitorNumber = str_pad($lastVisitorNumber + 1, 3, '0', STR_PAD_LEFT);
 
-    // Pass the next visitor number to the view
     return view('receptionist.walk-in', compact('nextVisitorNumber'));
 }
 
@@ -33,7 +30,6 @@ public function store(Request $request)
         'visit_time' => 'required|date',
     ]);
 
-    // Check if the host exists in the organization table
     $hostExists = Organization::where('name', $request->host)->exists();
 
     if (!$hostExists) {
@@ -76,7 +72,6 @@ public function search(Request $request)
 {
     $query = $request->input('query');
 
-    // Fetch visitors who haven't logged out
     $visitors = Visitor::whereNull('logged_out_at')
         ->where(function ($q) use ($query) {
             $q->where('visitor_number', 'like', "%$query%")
@@ -90,7 +85,6 @@ public function search(Request $request)
 
 public function logout($id)
 {
-    // Find the visitor and update the logged_out_at column
     $visitor = Visitor::findOrFail($id);
     $visitor->update(['logged_out_at' => now()]);
 

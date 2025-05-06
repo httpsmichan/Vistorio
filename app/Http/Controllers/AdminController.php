@@ -53,12 +53,27 @@
             return view('admin.add');
         }
 
-        public function appointments()
+        // Subquery to filter appointments based on status
+        public function appointments(Request $request)
         {
-            $appointments = Appointment::all(); 
-            $approvedAppointments = Appointment::where('status', 'approved')->get(); 
+            $status = $request->query('status'); 
+
+            if ($status) {
+                $appointments = Appointment::whereIn('id', function ($query) use ($status) {
+                    $query->select('id')             
+                        ->from('appointments')     
+                        ->where('status', $status); 
+                })->get();                         
+            } else {
+                
+                $appointments = Appointment::all();
+            }
+
+            $approvedAppointments = Appointment::where('status', 'approved')->get();
+
             return view('admin.appointment', compact('appointments', 'approvedAppointments'));
         }
+
 
         public function store(Request $request)
         {
@@ -117,10 +132,17 @@
     return redirect()->route('admin')->with('success', 'User updated successfully');
 }
 
-
-        public function users()
+        //Subquery to filter users based on role
+        public function users(Request $request)
         {
-            $users = User::all();
+            $role = $request->query('role');
+
+            if ($role) {
+                $users = User::where('role', $role)->get();
+            } else {
+                $users = User::all();
+            }
+
             $nextId = User::max('id') + 1;
             return view('admin.user', compact('users', 'nextId'));
         }

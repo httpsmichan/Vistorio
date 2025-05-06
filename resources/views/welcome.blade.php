@@ -45,7 +45,6 @@
     </nav>
 
     <section id="about" class="h-[80vh] bg-[#eff1ed] flex items-start text-white text-2xl px-10 p-0 relative">
-    <!-- Left Side Content -->
     <div class="flex flex-col items-left text-left max-w-md z-10">
         <h2 class="px-5 mt-[160px] text-5xl font-alice text-black">Vistorio</h2>
         <p class="mt-2 text-5xl px-5 text-black font-rowdies whitespace-nowrap">

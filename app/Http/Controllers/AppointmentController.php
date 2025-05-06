@@ -49,7 +49,6 @@ class AppointmentController extends Controller
     {
         $query = $request->input('query');
 
-        // Fetch only approved appointments based on search input (name, date, email, etc.)
         $appointments = Appointment::where('status', 'approved')
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%$query%")
@@ -69,7 +68,7 @@ public function updateStatus(Request $request)
     foreach ($appointments as $appointmentId => $status) {
         $appointment = Appointment::find($appointmentId);
         if ($appointment) {
-            $appointment->status = $status; // set status as 'done'
+            $appointment->status = $status; 
             $appointment->save();
         }
     }

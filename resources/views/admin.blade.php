@@ -2,39 +2,35 @@
 
     <div class="py-6 px-4">
         <div class="flex space-x-4">
+
                 <!-- Sidebar -->
-                <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
+                <div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="{{ route('admin') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
-                                Dashboard
-                            </a>
+                            <a href="{{ route('admin') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Dashboard</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
-                                Appointments
-                            </a>
-                        </li>
-                        <li class="opacity-50 cursor-not-allowed">
-                            <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
+                            <a href="{{ route('admin.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Appointments</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
-                                User Management
-                            </a>
+                            <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Visitor Logs</a>
                         </li>
-                        <li class="opacity-50 cursor-not-allowed">
-                            <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
+                        <li>
+                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">User Management</a>
                         </li>
-                        <li class="opacity-50 cursor-not-allowed">
-                            <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white rounded">Notifications</a>
+                        <li>
+                            <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Employee Management</a>
                         </li>
-                        <li class="opacity-50 cursor-not-allowed">
-                            <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
+                        <li>
+                            <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Notifications</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Reports & Analytics</a>
                         </li>
                     </ul>
                 </div>
+
 
                 <div class="w-3/4 pl-4">
                     <div class="flex justify-center mb-6">

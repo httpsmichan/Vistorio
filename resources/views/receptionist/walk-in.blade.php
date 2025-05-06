@@ -8,7 +8,7 @@
     <div class="py-6 px-4">
         <div class="flex space-x-4">
                 <!-- Sidebar -->
-                <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
+                <div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
                     <ul class="space-y-2">
                         <li><a href="{{ route('receptionist') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Dashboard</a></li>
@@ -27,31 +27,26 @@
                         <form method="POST" action="{{ route('walk-in.store') }}">
                             @csrf
 
-                            <!-- Visitor # (Auto-fill with next available number) -->
                             <div class="mb-4">
                                 <label class="block font-medium text-gray-700">Visitor #</label>
                                 <input type="text" name="visitor_number" class="border p-2 w-full" value="{{ $nextVisitorNumber }}" readonly required>
                             </div>
 
-                            <!-- Full Name -->
                             <div class="mb-4">
                                 <label class="block font-medium text-gray-700">Full Name</label>
                                 <input type="text" name="full_name" class="border p-2 w-full" required>
                             </div>
 
-                            <!-- Age -->
                             <div class="mb-4">
                                 <label class="block font-medium text-gray-700">Age</label>
                                 <input type="number" name="age" class="border p-2 w-full" required>
                             </div>
 
-                            <!-- Floor to Visit -->
                             <div class="mb-4">
                                 <label class="block font-medium text-gray-700">Which Floor?</label>
                                 <input type="number" name="floor" id="floor" class="border p-2 w-full" required oninput="updateFloorSuffix()">
                             </div>
 
-                           <!-- Host -->
                             <div class="mb-4">
                                 <label class="block font-medium text-gray-700">Host (Who will they visit?)</label>
                                 <input type="text" name="host" class="border p-2 w-full" required value="{{ old('host') }}">
@@ -61,13 +56,11 @@
                             </div>
 
 
-                            <!-- Time & Date -->
                             <div class="mb-4">
                                 <label class="block font-medium text-gray-700">Time & Date</label>
                                 <input type="datetime-local" name="visit_time" class="border p-2 w-full" required value="{{ now()->format('Y-m-d\TH:i') }}">
                             </div>
 
-                            <!-- Submit Button -->
                             <div>
                                 <button type="submit" class="bg-blue-500 text-black px-4 py-2 rounded">
                                     Register Visitor

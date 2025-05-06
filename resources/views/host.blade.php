@@ -8,7 +8,7 @@
     <div class="py-6 px-4">
         <div class="flex space-x-4">
                 <!-- Sidebar -->
-                <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
+                <div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
                     <ul class="space-y-2">
                         <li><a href="{{ route('manage.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Manage Appointments</a></li>

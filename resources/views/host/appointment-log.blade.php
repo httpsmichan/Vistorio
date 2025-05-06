@@ -1,117 +1,113 @@
 <x-app-layout>
-
     <div class="py-6 px-4">
         <div class="flex space-x-4">
-                <!-- Sidebar -->
-                <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-semibold mb-4">Menu</h3>
-                    <ul class="space-y-2">
+            <!-- Sidebar -->
+            <div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
+                <h3 class="text-lg font-semibold mb-4">Menu</h3>
+                <ul class="space-y-2">
                     <li><a href="{{ route('manage.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Manage Appointments</a></li>
                     <li><a href="{{ route('host.calendar') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Appointment Calendar</a></li>
                     <li><a href="{{ route('appointment.logs') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Appointment Logs</a></li>
                     <li><a href="{{ route('host.visitor-logs') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Visitor Logs</a></li>
                     <li><a href="{{ route('host.notifications') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Notifications</a></li>
-                    </ul>
-                </div>
+                </ul>
+            </div>
 
-                <!-- Main Content -->
-                <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
+            <!-- Main Content -->
+            <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-semibold mb-4">Appointment Logs</h3>
 
-                    <!-- Search Bar -->
-                    <div class="mb-4">
-                        <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Visitor Name, Status, or Booked Date..." oninput="searchLogs()">
-                    </div>
+                <!-- Filter by -->
+                <div class="mb-4">
+                    <form method="GET" action="{{ route('appointment.logs') }}" class="flex items-center space-x-4 justify-end">
+                        <div>
+                            <label for="filter_type" class="text-sm font-medium">Filter By:</label>
+                            <select id="filter_type" name="filter_type" class="px-8 py-2 border rounded" onchange="toggleFilterInput()">
+                                <option value="status" {{ request('filter_type') === 'status' ? 'selected' : '' }}>Status</option>
+                                <option value="date" {{ request('filter_type') === 'date' ? 'selected' : '' }}>Date</option>
+                            </select>
+                        </div>
 
-                    <!-- Buttons to toggle between booked and completed logs -->
-                    <div class="mb-4">
-                        <button id="bookedLogsBtn" class="bg-transparent text-black px-4 py-2 rounded mr-4" onclick="toggleLogs('booked')">Rejected Appointments</button>
-                        <button id="completedLogsBtn" class="bg-transparent text-black px-4 py-2 rounded" onclick="toggleLogs('completed')">Completed Appointments</button>
-                    </div>
+                        <!-- Status Dropdown -->
+                        <div id="status_filter" style="{{ request('filter_type') === 'date' ? 'display:none;' : '' }}">
+                            <label for="status" class="text-sm font-medium">Status:</label>
+                            <select name="status" id="status" class="px-8 py-2 border rounded">
+                                <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                            </select>
+                        </div>
 
-                    <!-- Booked Logs Section -->
-<div id="bookedLogs" class="space-y-6 hidden appointment-log-container">
-    @if($bookedAppointments->isEmpty())
-        <p class="text-gray-600">No bookings yet.</p> <!-- Default message if no booked appointments -->
-    @else
-        @foreach($bookedAppointments as $appointment)
-        <div class="p-4 mb-2 border-b appointment-log"
-                data-name="{{ $appointment->name }}"
-                data-status="{{ $appointment->status }}"
-                data-booked-date="{{ \Carbon\Carbon::parse($appointment->created_at)->format('M d, Y h:i A') }}"
-                data-appointment-date="{{ \Carbon\Carbon::parse($appointment->preferred_date_time)->format('M d, Y h:i A') }}">
+                        <!-- Date Picker -->
+                        <div id="date_filter" style="{{ request('filter_type') === 'status' || !request('filter_type') ? 'display:none;' : '' }}">
+                            <label for="date" class="text-sm font-medium">Date:</label>
+                            <input type="date" name="date" id="date" value="{{ request('date') }}" class="px-3 py-2 border rounded">
+                        </div>
 
-                <p><strong>{{ $appointment->name }}</strong> has booked an appointment on {{ \Carbon\Carbon::parse($appointment->created_at)->format('M d, Y h:i A') }}.</p>
-                <p><strong>Appointment Date:</strong> {{ \Carbon\Carbon::parse($appointment->preferred_date_time)->format('M d, Y h:i A') }}</p>
-                <p><strong>Status:</strong> {{ ucfirst($appointment->status) }}</p> <!-- Display Status -->
-            </div>
-        @endforeach
-    @endif
-</div>
-
-
-                    <!-- Completed Logs Section -->
-                    <div id="completedLogs" class="space-y-6 hidden appointment-log-container">
-                        @foreach($completedAppointments as $appointment)
-                            <div class="p-4 mb-2 border-b appointment-log"
-                                data-name="{{ $appointment->name }}"
-                                data-status="{{ $appointment->status }}"
-                                data-booked-date="{{ \Carbon\Carbon::parse($appointment->created_at)->format('M d, Y h:i A') }}"
-                                data-appointment-date="{{ \Carbon\Carbon::parse($appointment->updated_at)->format('M d, Y h:i A') }}">
-
-                                <p><strong>{{ $appointment->name }}</strong> has completed an appointment on {{ \Carbon\Carbon::parse($appointment->updated_at)->format('M d, Y h:i A') }}.</p>
-                                <p><strong>Booked On:</strong> {{ \Carbon\Carbon::parse($appointment->created_at)->format('M d, Y h:i A') }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-
-
+                        <div>
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Filter</button>
+                        </div>
+                    </form>
                 </div>
+
+                <!-- Search Bar -->
+                <div class="mb-4">
+                    <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Visitor Name..." oninput="searchLogs()">
+                </div>
+
+                <!-- Logs -->
+                <div class="space-y-6 appointment-log-container">
+                    @foreach($appointments as $appointment)
+                        <div class="p-4 mb-2 border-b appointment-log"
+                             data-name="{{ $appointment->name }}"
+                             data-status="{{ $appointment->status }}"
+                             data-booked-date="{{ \Carbon\Carbon::parse($appointment->created_at)->format('M d, Y h:i A') }}"
+                             data-appointment-date="{{ \Carbon\Carbon::parse($appointment->preferred_date_time)->format('M d, Y h:i A') }}">
+
+                            @if($appointment->status == 'completed')
+                                <p><strong>{{ $appointment->name }}</strong> has completed an appointment on {{ \Carbon\Carbon::parse($appointment->updated_at)->format('M d, Y h:i A') }}.</p>
+                            @else
+                                <p><strong>{{ $appointment->name }}</strong> has booked an appointment on {{ \Carbon\Carbon::parse($appointment->created_at)->format('M d, Y h:i A') }}.</p>
+                            @endif
+                            
+                            <p><strong>Appointment Date:</strong> {{ \Carbon\Carbon::parse($appointment->preferred_date_time)->format('M d, Y h:i A') }}</p>
+                            <p><strong>Status:</strong> {{ ucfirst($appointment->status) }}</p>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
         </div>
     </div>
 
     <script>
-    // Function to toggle between booked and completed logs
-    function toggleLogs(type) {
-        document.getElementById('bookedLogs').classList.add('hidden');
-        document.getElementById('completedLogs').classList.add('hidden');
-
-        if (type === 'booked') {
-            document.getElementById('bookedLogs').classList.remove('hidden');
-        } else {
-            document.getElementById('completedLogs').classList.remove('hidden');
+        function toggleFilterInput() {
+            const filterType = document.getElementById('filter_type').value;
+            document.getElementById('status_filter').style.display = (filterType === 'status') ? 'block' : 'none';
+            document.getElementById('date_filter').style.display = (filterType === 'date') ? 'block' : 'none';
         }
-    }
 
-    // Set default view to show booked logs
-    window.onload = function() {
-        toggleLogs('booked');
-    }
+        window.onload = function() {
+            toggleFilterInput();
+            toggleLogs('booked');
+        }
 
-    // Search function
-    function searchLogs() {
-        const query = document.getElementById('searchBar').value.toLowerCase();
-        const logs = document.querySelectorAll('.appointment-log');
+        function searchLogs() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const logs = document.querySelectorAll('.appointment-log');
 
-        logs.forEach(log => {
-            const name = log.getAttribute('data-name').toLowerCase();
-            const status = log.getAttribute('data-status').toLowerCase();
-            const bookedDate = log.getAttribute('data-booked-date').toLowerCase();
-            const appointmentDate = log.getAttribute('data-appointment-date') ? log.getAttribute('data-appointment-date').toLowerCase() : ''; // Get appointment date for completed logs
+            logs.forEach(log => {
+                const name = log.getAttribute('data-name').toLowerCase();
 
-            if (
-                name.includes(query) ||
-                status.includes(query) ||
-                bookedDate.includes(query) ||
-                appointmentDate.includes(query) // Check appointment date
-            ) {
-                log.style.display = '';
-            } else {
-                log.style.display = 'none';
-            }
-        });
-    }
-</script>
-
+                if (name.includes(query)) {
+                    log.style.display = '';
+                } else {
+                    log.style.display = 'none';
+                }
+            });
+        }
+    </script>
 
 </x-app-layout>

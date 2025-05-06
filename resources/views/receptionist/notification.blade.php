@@ -8,7 +8,7 @@
     <div class="py-6 px-4">
         <div class="flex space-x-4">
                 <!-- Sidebar -->
-                <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
+                <div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
                     <ul class="space-y-2">
                         <li><a href="{{ route('receptionist') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Dashboard</a></li>
@@ -22,15 +22,12 @@
                 <!-- Main Content -->
                 <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
 
-                    <!-- Buttons to toggle notifications -->
                     <div class="mb-4">
                         <button id="visitorBtn" class="bg-blue-500 text-black px-4 py-2 rounded mr-4" onclick="toggleNotifications('visitor')">Visitors Notifications</button>
                         <button id="appointmentBtn" class="bg-green-500 text-black px-4 py-2 rounded" onclick="toggleNotifications('appointment')">Appointments Notifications</button>
                     </div>
 
-                    <!-- Notifications Sections -->
 
-                    <!-- Visitors Notifications -->
                 <div id="visitorNotifications" class="space-y-6 hidden">
                     <!-- Visitors with 10 Minutes or Less Remaining -->
                     <div class="bg-yellow-100 p-4 rounded-md shadow-md">
@@ -69,8 +66,6 @@
                     </div>
 
 
-                   <!-- Appointments Notifications -->
-
                     <div id="appointmentNotifications" class="space-y-6 hidden">
                         <!-- Past Appointments -->
                         <div class="bg-red-100 p-4 rounded-md shadow-md">
@@ -97,13 +92,11 @@
     </div>
 
     <script>
-        // Function to toggle between the visitor and appointment notifications
+      
         function toggleNotifications(type) {
-            // Hide both sections initially
             document.getElementById('visitorNotifications').classList.add('hidden');
             document.getElementById('appointmentNotifications').classList.add('hidden');
             
-            // Show the selected section
             if (type === 'visitor') {
                 document.getElementById('visitorNotifications').classList.remove('hidden');
             } else {
@@ -111,7 +104,6 @@
             }
         }
 
-        // Set the default view to show visitor notifications
         window.onload = function() {
             toggleNotifications('visitor');
         }

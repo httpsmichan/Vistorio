@@ -2,43 +2,38 @@
 
     <div class="py-6 px-4">
         <div class="flex space-x-4">
-            <!-- Sidebar -->
-            <div class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-sm">
-                <h3 class="text-lg font-semibold mb-4">Menu</h3>
-                <ul class="space-y-2">
-                    <li>
-                        <a href="{{ route('admin') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
-                            Appointments
-                        </a>
-                    </li>
-                    <li class="opacity-50 cursor-not-allowed">
-                        <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white rounded">Visitor Logs</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">
-                            User Management
-                        </a>
-                    </li>
-                    <li class="opacity-50 cursor-not-allowed">
-                    <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white rounded">Employee Management</a>
-                    </li>
-                    <li class="opacity-50 cursor-not-allowed">
-                        <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white rounded">Notifications</a>
-                    </li>
-                    <li class="opacity-50 cursor-not-allowed">
-                        <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white rounded">Reports & Analytics</a>
-                    </li>
-                </ul>
-            </div>
+<!-- Sidebar -->
+<div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Menu</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="{{ route('admin') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Appointments</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Visitor Logs</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">User Management</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Employee Management</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Notifications</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Reports & Analytics</a>
+                        </li>
+                    </ul>
+                </div>
+
 
             <!-- Main Content -->
             <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
-                <!-- Same Visitor Multiple Times Today -->
+     
                 <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
                     <h3 class="text-lg font-semibold mb-4">Same Visitor Multiple Times Today</h3>
                     <div class="space-y-3">
@@ -53,7 +48,7 @@
                     </div>
                 </div>
 
-                <!-- Hosts Not Responding -->
+            
                 <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
                     <h3 class="text-lg font-semibold mb-4">Pending Appointments</h3>
                     <div class="space-y-3">
@@ -68,7 +63,7 @@
                     </div>
                 </div>
 
-                <!-- Excessive Rejections -->
+          
                 <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
                     <h3 class="text-lg font-semibold mb-4">Excessive Appointment Rejections</h3>
                     <div class="space-y-3">
@@ -101,7 +96,7 @@
                             datasets: [{
                                 label: 'Failed Attempts',
                                 data: {!! json_encode($failedLogins->pluck('attempts')) !!},
-                                backgroundColor: '#f87171', // Tailwind red-400
+                                backgroundColor: '#f87171', 
                                 borderRadius: 6,
                             }]
                         },
