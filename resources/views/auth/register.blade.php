@@ -21,19 +21,10 @@
         
     <!-- Image Section -->
         <div class="w-3/5 bg-white flex justify-center items-center relative rounded-br-[4rem]">
-            <img src="{{ asset('images/pic1.jpg') }}" 
+            <img src="{{ asset('images/register.jpg') }}" 
                 alt="Login Image" 
                 class="shadow-md w-full h-auto object-cover rounded-tr-[3rem] rounded-bl-[3rem] 
                     transition-all duration-500 hover:scale-95 hover:brightness-90">
-            <!-- Navigation Buttons (Lower Right) -->
-            <div class="absolute bottom-4 left-4 flex gap-3">
-                <button class="w-10 h-10 flex items-center justify-center bg-gray-400/50 text-white rounded-full border border-white/50 hover:bg-gray-500/70 hover:border-white/70 transition">
-                    &#8592; <!-- Left Arrow -->
-                </button>
-                <button class="w-10 h-10 flex items-center justify-center bg-gray-400/50 text-white rounded-full border border-white/50 hover:bg-gray-500/70 hover:border-white/70 transition">
-                    &#8594; <!-- Right Arrow -->
-                </button>
-            </div>
         </div>
 
     <!-- Register Form Section (Optimized for Minimal Padding & Margins) -->

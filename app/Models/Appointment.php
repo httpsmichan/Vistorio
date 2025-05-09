@@ -16,4 +16,9 @@ class Appointment extends Model
         'host',
         'status',
     ];
+
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
 }

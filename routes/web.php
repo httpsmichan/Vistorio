@@ -65,6 +65,9 @@ Route::post('/walk-in', [VisitorController::class, 'store'])->name('walk-in.stor
 Route::get('/log-out', [VisitorController::class, 'search'])->name('log-out.search');
 Route::patch('/log-out/{id}', [VisitorController::class, 'logout'])->name('log-out.update');
 
+Route::get('/visit-history', [VisitorController::class, 'visitHistory'])->middleware('auth')->name('visit.history');
+Route::get('/visitor/notifications', [VisitorController::class, 'notifications'])->name('visitor.notifications');
+
 Route::get('/receptionist/notifications', [NotificationController::class, 'index'])->name('receptionist.notifications');
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {

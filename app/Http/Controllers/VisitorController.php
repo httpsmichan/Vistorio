@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\Organization;
+use App\Models\Appointment;
 
 class VisitorController extends Controller
 {
@@ -16,6 +18,17 @@ class VisitorController extends Controller
     $nextVisitorNumber = str_pad($lastVisitorNumber + 1, 3, '0', STR_PAD_LEFT);
 
     return view('receptionist.walk-in', compact('nextVisitorNumber'));
+}
+
+public function notifications()
+{
+    // Fetch the approved appointments, excluding completed ones
+    $approvedAppointments = Appointment::where('status', 'approved')
+        ->where('status', '!=', 'completed')  // Exclude completed appointments
+        ->orderBy('updated_at', 'desc')  // Order by the most recent update
+        ->get();
+
+    return view('visitor.notifications', compact('approvedAppointments'));
 }
 
 
@@ -91,6 +104,13 @@ public function logout($id)
     return redirect()->route('log-out.search')->with('success', 'Visitor logged out successfully!');
 }
 
+public function visitHistory()
+{
+    $userId = Auth::id(); // get logged-in user's ID
+    $appointments = Appointment::where('user_id', $userId)
+        ->get(['name', 'purpose', 'status', 'preferred_date_time', 'created_at']);
 
+    return view('visitor.visit-history', compact('appointments'));
+}
 }
 

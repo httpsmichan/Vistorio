@@ -55,7 +55,7 @@
 
         <!-- Image Section -->
         <div class="w-3/5 bg-white flex justify-center items-center relative rounded-br-[4rem]">
-            <img src="{{ asset('images/pic1.jpg') }}" 
+            <img src="{{ asset('images/login.jpg') }}" 
                 alt="Login Image" 
                 class="shadow-md w-full h-auto object-cover rounded-tl-[3rem] rounded-br-[3rem] transition-all duration-500 hover:scale-95 hover:brightness-90">
         </div>

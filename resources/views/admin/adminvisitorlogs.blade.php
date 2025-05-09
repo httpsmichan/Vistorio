@@ -1,37 +1,44 @@
 <x-app-layout>
 
-    <div class="py-6 px-4">
-        <div class="flex space-x-4">
-<!-- Sidebar -->
-<div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-semibold mb-4">Menu</h3>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="{{ route('admin') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.appointments') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Appointments</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.visitor.logs') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Visitor Logs</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">User Management</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.employees') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Employee Management</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.notifications') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Notifications</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.analytics') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Reports & Analytics</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="flex min-h-screen">
+        <div class="flex space-x-4 w-full">
+        <!-- Sidebar -->
+        <div class="w-64 bg-[#27374D] text-white fixed md:relative min-h-screen transition-all duration-300">
+            <h3 class="text-1xl font-bold m-5 hidden md:block text-center">VISTORIO</h3>
+            <nav class="space-y-2">
+                <a href="{{ route('admin') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[#1e2c3b] transition">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden md:inline">Dashboard</span>
+                </a>
+                <a href="{{ route('admin.appointments') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[#1e2c3b] transition">
+                    <i class="fas fa-calendar-check"></i>
+                    <span class="hidden md:inline">Appointments</span>
+                </a>
+                <a href="{{ route('admin.visitor.logs') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[#1e2c3b] transition">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span class="hidden md:inline">Visitor Logs</span>
+                </a>
+                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[#1e2c3b] transition">
+                    <i class="fas fa-users-cog"></i>
+                    <span class="hidden md:inline">User Management</span>
+                </a>
+                <a href="{{ route('admin.employees') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[#1e2c3b] transition">
+                    <i class="fas fa-user-tie"></i>
+                    <span class="hidden md:inline">Employee Management</span>
+                </a>
+                <a href="{{ route('admin.notifications') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[#1e2c3b] transition">
+                    <i class="fas fa-bell"></i>
+                    <span class="hidden md:inline">Notifications</span>
+                </a>
+                <a href="{{ route('admin.analytics') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[#1e2c3b] transition">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="hidden md:inline">Reports & Analytics</span>
+                </a>
+            </nav>
+        </div>
 
             <!-- Main Content -->
-            <div class="flex-1 bg-white shadow-sm sm:rounded-lg p-6">
+            <div class="flex-1 m-5  bg-white shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-semibold">Visitor Logs</h3>
 
                 <!-- Search Bar -->
@@ -39,7 +46,7 @@
                     <input id="searchBar" type="text" class="px-4 py-2 w-full border rounded" placeholder="Search by Visitor Name, Status, Host, Floor, or Visit Date..." oninput="searchLogs()">
                 </div>
 
-                <table class="w-full border-collapse border border-gray-300">
+                <table class="w-full border-collapse border border-gray-300 text-sm">
                     <thead>
                         <tr class="bg-gray-200">
                             <th class="border border-gray-300 px-4 py-2">Visitor Number</th>

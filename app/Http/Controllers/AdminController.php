@@ -136,32 +136,38 @@
         public function users(Request $request)
         {
             $role = $request->query('role');
-
+        
             if ($role) {
-                $users = User::where('role', $role)->get();
+                $users = User::where('role', $role)
+                            ->orderBy('created_at', 'desc')  // Order users by creation date, latest first
+                            ->get();
             } else {
-                $users = User::all();
+                $users = User::orderBy('created_at', 'desc')  // Order users by creation date, latest first
+                            ->get();
             }
-
+        
             $nextId = User::max('id') + 1;
             return view('admin.user', compact('users', 'nextId'));
-        }
+        }        
 
         public function showEmployeeForm(Request $request)
         {
             $search = $request->query('search');
-
+        
             if ($search) {
                 $employees = DB::table('organization')
                     ->where('name', 'like', '%' . $search . '%')
                     ->orWhere('position', 'like', '%' . $search . '%')
+                    ->orderBy('created_at', 'desc')  // Order by creation date, latest first
                     ->get();
             } else {
-                $employees = DB::table('organization')->get();
+                $employees = DB::table('organization')
+                    ->orderBy('created_at', 'desc')  // Order by creation date, latest first
+                    ->get();
             }
-
+        
             return view('admin.employees', compact('employees'));
-        }
+        }        
 
         public function storeEmployee(Request $request)
         {
