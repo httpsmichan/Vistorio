@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\Appointment;
+use App\Models\User;
 
 class HostController extends Controller
 {

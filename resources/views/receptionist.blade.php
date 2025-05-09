@@ -11,7 +11,7 @@
                 <div class="w-1/5 bg-gray-100 p-4 rounded-lg shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Menu</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('receptionist') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Dashboard</a></li>
+                      
                         <li><a href="{{ route('walk-in.create') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Walk-In Registration</a></li>
                         <li><a href="{{ route('log-out.search') }}" class="block px-4 py-2 bg-white hover:bg-gray-200 rounded transition">Visitor Log-out</a></li>
                         <li><a href="{{ route('receptionist.appointments.lookup') }}" class="block px-4 py-2 bg-white rounded transition">Appointment Lookup</a></li>

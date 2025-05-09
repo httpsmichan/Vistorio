@@ -139,10 +139,10 @@
         
             if ($role) {
                 $users = User::where('role', $role)
-                            ->orderBy('created_at', 'desc')  // Order users by creation date, latest first
+                            ->orderBy('created_at', 'desc')  
                             ->get();
             } else {
-                $users = User::orderBy('created_at', 'desc')  // Order users by creation date, latest first
+                $users = User::orderBy('created_at', 'desc')
                             ->get();
             }
         
@@ -158,11 +158,11 @@
                 $employees = DB::table('organization')
                     ->where('name', 'like', '%' . $search . '%')
                     ->orWhere('position', 'like', '%' . $search . '%')
-                    ->orderBy('created_at', 'desc')  // Order by creation date, latest first
+                    ->orderBy('created_at', 'desc')  
                     ->get();
             } else {
                 $employees = DB::table('organization')
-                    ->orderBy('created_at', 'desc')  // Order by creation date, latest first
+                    ->orderBy('created_at', 'desc')  
                     ->get();
             }
         
